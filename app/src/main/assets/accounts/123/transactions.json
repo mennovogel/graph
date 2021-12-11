@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "amount": {
+      "currency": "EUR",
+      "amount": 50.23
+    },
+    "name": "Albert Heijn",
+    "description": "Boodschappen",
+    "time": "2021-10-31T13:38:53+01:00"
+  },
+  {
+    "id": 2,
+    "amount": {
+      "currency": "EUR",
+      "amount": -20.00
+    },
+    "name": "Tikkie",
+    "description": "Uitje met vrienden",
+    "time": "2021-10-31T21:20:34+01:00"
+  }
+]

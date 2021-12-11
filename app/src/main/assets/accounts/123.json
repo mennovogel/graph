@@ -1,0 +1,11 @@
+{
+  "id": 123,
+  "person": {
+    "first_name": "Vogel",
+    "surname": "Menno"
+  },
+  "balance": {
+    "currency": "EUR",
+    "amount": 812.12
+  }
+}

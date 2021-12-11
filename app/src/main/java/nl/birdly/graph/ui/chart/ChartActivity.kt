@@ -3,14 +3,32 @@ package nl.birdly.graph.ui.chart
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import nl.birdly.graph.data.banking.BankingApi
+import nl.birdly.graph.data.banking.domain.Transaction
 import nl.birdly.graph.ui.theme.GraphTheme
+import nl.birdly.graph.util.ResourceStatus
 
 class ChartActivity : ComponentActivity() {
+    private val viewModel by viewModels<ChartViewModel> {
+        ChartViewModel.Factory(BankingApi.Builder.build(applicationContext.assets), 123L)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GraphTheme {
-                GraphScreen()
+                val state by viewModel.transactions().observeAsState()
+                when (val stateVal = state) {
+                    is ResourceStatus.Success<List<Transaction>> -> GraphScreen(stateVal.data)
+                    is ResourceStatus.Loading<List<Transaction>> -> { /* TODO */
+                    }
+                    is ResourceStatus.Error<List<Transaction>> -> { /* TODO */
+                    }
+                }
+
             }
         }
     }

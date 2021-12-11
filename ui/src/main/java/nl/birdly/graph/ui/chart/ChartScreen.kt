@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import nl.birdly.graph.ui.chart.linechart.LineChart
 
 @Composable
-fun GraphScreen() {
+fun GraphScreen(observeAsState: Any?) {
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
         LineChart(
