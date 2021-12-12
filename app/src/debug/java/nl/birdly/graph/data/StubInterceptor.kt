@@ -16,23 +16,24 @@ class StubInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val path = ChainReader.readPath(chain)
         val response = try {
-            stringReader.readAsString("$path.json")
-        } catch (e: IOException) {
-//            try {
-//                AssetReader.readAsString(
-//                    assets,
-//                    url.encodedPath().substring(1).toLowerCase() + ".json"
-//                )
-//            } catch (e1: IOException) {
+            stringReader.readAsString("$path.json").also {
                 Timber.d(
                     "Mock for ${
                         path.substring(1).lowercase(Locale.getDefault())
-                    }.json not found in /assets folder."
+                    }.json was found!"
                 )
+                // Mock loading time
+                Thread.sleep(1000)
+            }
+        } catch (e: IOException) {
+            Timber.d(
+                "Mock for ${
+                    path.substring(1).lowercase(Locale.getDefault())
+                }.json not found in /assets folder."
+            )
 
-                // If no stub was found, proceed like a normal request
-                return chain.proceed(chain.request())
-//            }
+            // If no stub was found, proceed like a normal request
+            return chain.proceed(chain.request())
         }
 
         // A stub was found, so we can use this stub.

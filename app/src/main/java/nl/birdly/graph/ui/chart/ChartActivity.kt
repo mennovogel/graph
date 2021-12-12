@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import nl.birdly.graph.data.banking.BankingApi
-import nl.birdly.graph.data.banking.domain.Transaction
+import nl.birdly.graph.data.banking.ui.ResourceStatusScreen
 import nl.birdly.graph.ui.theme.GraphTheme
 import nl.birdly.graph.util.ResourceStatus
 
@@ -20,15 +20,11 @@ class ChartActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             GraphTheme {
-                val state by viewModel.transactions().observeAsState()
-                when (val stateVal = state) {
-                    is ResourceStatus.Success<List<Transaction>> -> GraphScreen(stateVal.data)
-                    is ResourceStatus.Loading<List<Transaction>> -> { /* TODO */
-                    }
-                    is ResourceStatus.Error<List<Transaction>> -> { /* TODO */
-                    }
+                val state by viewModel.transactions.observeAsState(ResourceStatus.Loading())
+                val stateVal = state
+                ResourceStatusScreen(stateVal) {
+                    GraphScreen(it)
                 }
-
             }
         }
     }

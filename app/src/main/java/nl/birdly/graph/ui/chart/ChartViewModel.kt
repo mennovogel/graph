@@ -4,11 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import nl.birdly.graph.data.banking.BankingApi
 import nl.birdly.graph.data.banking.domain.Transaction
 import nl.birdly.graph.data.banking.extension.mapToResourceStatus
@@ -19,12 +16,12 @@ class ChartViewModel(
     private val userId: Long
 ) : ViewModel() {
 
-    fun transactions(): LiveData<ResourceStatus<List<Transaction>>> =
+    val transactions: LiveData<ResourceStatus<List<Transaction>>> =
         flow {
             val value = bankingApi.transactions(userId)
             emit(value)
         }.mapToResourceStatus()
-            .asLiveData()
+            .asLiveData(viewModelScope.coroutineContext)
 
     class Factory(
         private val bankingApi: BankingApi,
