@@ -21,8 +21,7 @@ class ChartActivity : ComponentActivity() {
         setContent {
             GraphTheme {
                 val state by viewModel.transactions.observeAsState(ResourceStatus.Loading())
-                val stateVal = state
-                ResourceStatusScreen(stateVal) {
+                ResourceStatusScreen(state) {
                     GraphScreen(it)
                 }
             }

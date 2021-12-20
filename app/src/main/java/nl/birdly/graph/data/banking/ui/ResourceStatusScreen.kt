@@ -6,7 +6,7 @@ import nl.birdly.graph.ui.screen.LoadingScreen
 import nl.birdly.graph.util.ResourceStatus
 
 @Composable
-fun <T : Any>ResourceStatusScreen(
+fun <T>ResourceStatusScreen(
     resourceStatus: ResourceStatus<T>,
     loadingScreen: @Composable () -> Unit = { LoadingScreen() },
     errorScreen: @Composable () -> Unit = { ErrorScreen() },
