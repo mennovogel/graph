@@ -13,15 +13,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nl.birdly.graph.data.banking.domain.Amount
 import nl.birdly.graph.data.banking.domain.Transaction
 import nl.birdly.graph.ui.chart.linechart.LineChart
 import nl.birdly.graph.ui.listitem.RegularListItem
 import nl.birdly.graph.util.toDisplayableAmount
 import nl.birdly.graph.util.toDisplayableDate
+import java.util.*
 
 @Composable
-fun GraphScreen(transactions: List<Transaction>) {
+fun BankingScreen(transactions: List<Transaction>) {
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
         if (transactions.isEmpty()) return@Surface
@@ -69,4 +72,20 @@ fun GraphScreen(transactions: List<Transaction>) {
             }
         }
     }
+}
+
+@Preview(widthDp = 320, heightDp = 440)
+@Composable
+private fun BankingScreenPreview() {
+    BankingScreen(
+        transactions = listOf(
+            Transaction(
+                1L,
+                Amount("EUR", 10.00),
+                "name",
+                "description",
+                Calendar.getInstance().time
+            )
+        )
+    )
 }

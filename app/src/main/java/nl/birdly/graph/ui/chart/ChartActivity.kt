@@ -22,7 +22,7 @@ class ChartActivity : ComponentActivity() {
             GraphTheme {
                 val state by viewModel.transactions.observeAsState(ResourceStatus.Loading())
                 ResourceStatusScreen(state) {
-                    GraphScreen(it)
+                    BankingScreen(it)
                 }
             }
         }
