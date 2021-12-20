@@ -28,5 +28,35 @@
     "name": "Bar Gast",
     "description": "Dirty chai latte haver",
     "time": "2021-11-01T12:20:20+01:00"
+  },
+  {
+    "id": 4,
+    "amount": {
+      "currency": "EUR",
+      "amount": -50.00
+    },
+    "name": "Tandarts",
+    "description": "Controle",
+    "time": "2021-11-05T10:32:22+01:00"
+  },
+  {
+    "id": 5,
+    "amount": {
+      "currency": "EUR",
+      "amount": -40.55
+    },
+    "name": "Albert Heijn",
+    "description": "Boodschappen",
+    "time": "2021-11-06T13:40:55+01:00"
+  },
+  {
+    "id": 6,
+    "amount": {
+      "currency": "EUR",
+      "amount": 200.00
+    },
+    "name": "Gezamelijke rekening",
+    "description": "Hobbygeld",
+    "time": "2021-11-07T08:00:21+01:00"
   }
 ]

@@ -18,8 +18,8 @@ class ChartViewModel(
 
     val transactions: LiveData<ResourceStatus<List<Transaction>>> =
         flow {
-            val value = bankingApi.transactions(userId)
-            emit(value)
+            val transactions = bankingApi.transactions(userId)
+            emit(transactions.sortedByDescending { it.time })
         }.mapToResourceStatus()
             .asLiveData(viewModelScope.coroutineContext)
 
