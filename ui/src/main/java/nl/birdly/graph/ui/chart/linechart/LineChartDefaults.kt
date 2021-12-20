@@ -38,8 +38,8 @@ object LineChartDefaults {
 
     @Composable
     fun colors(
-        lineColor: Color = MaterialTheme.colors.primary,
-        dotColor: Color = MaterialTheme.colors.primaryVariant,
+        lineColor: Color = MaterialTheme.colors.secondary,
+        dotColor: Color = MaterialTheme.colors.secondaryVariant,
         backgroundColor: Color = MaterialTheme.colors.background,
     ): LineChartColors = DefaultLineChartColors(
         lineColor,
@@ -49,8 +49,8 @@ object LineChartDefaults {
 
     @Composable
     fun sizes(
-        lineThickness: Float = Stroke.HairlineWidth,
-        dotSize: Size = Size(8.dp.value, 8.dp.value),
+        lineThickness: Float = Stroke.DefaultMiter,
+        dotSize: Size = Size(16.dp.value, 16.dp.value),
     ): LineChartSizes = DefaultLineChartSizes(
         lineThickness,
         dotSize,
