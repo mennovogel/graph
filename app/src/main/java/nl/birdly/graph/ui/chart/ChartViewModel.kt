@@ -44,6 +44,8 @@ class ChartViewModel(
 
 private fun List<Transaction>.toBankingUiState(): BankingUiState {
     val data = sortedBy { it.time }
+    var amount = 200.0
+
     return BankingUiState(
         GraphDataUiState(
             xRange = Pair(
@@ -54,11 +56,9 @@ private fun List<Transaction>.toBankingUiState(): BankingUiState {
                 data.minOf { it.amount.amount }.toString(),// TODO: Convert to displayable amount
                 data.maxOf { it.amount.amount }.toString(),
             ),
-            map {
-                DataPointUiState(
-                    it.time.time.toFloat(),
-                    it.amount.amount.toFloat()
-                )
+            data.map {
+                amount += it.amount.amount
+                DataPointUiState(it.time.time.toFloat(), amount.toFloat())
             }
         ),
         map {
