@@ -15,41 +15,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nl.birdly.graph.data.banking.domain.Amount
-import nl.birdly.graph.data.banking.domain.Transaction
 import nl.birdly.graph.ui.chart.linechart.LineChart
 import nl.birdly.graph.ui.listitem.RegularListItem
-import nl.birdly.graph.util.toDisplayableAmount
-import nl.birdly.graph.util.toDisplayableDate
+import nl.birdly.graph.ui.transaction.BankingUiState
+import nl.birdly.graph.ui.transaction.DataPointUiState
+import nl.birdly.graph.ui.transaction.GraphDataUiState
+import nl.birdly.graph.ui.transaction.TransactionUiState
 import java.util.*
 
 @Composable
-fun BankingScreen(transactions: List<Transaction>) {
+fun BankingScreen(bankingUiState: BankingUiState) {
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
-        if (transactions.isEmpty()) return@Surface
+        if (bankingUiState.listItems.isEmpty()) return@Surface
 
         Column {
-            var amount = 200.0
-            val data = transactions
-                .sortedBy { it.time }
-                .map {
-                    amount += it.amount.amount
-                    PointF(it.time.time.toFloat(), amount.toFloat())
-                }
             LineChart(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp),
                 initialXRange = Range.create(
-                    data.minOf { it.x },
-                    data.maxOf { it.x }
+                    bankingUiState.graphData.dataPoints.minOf { it.x },
+                    bankingUiState.graphData.dataPoints.maxOf { it.x }
                 ),
                 yRange = Range.create(
-                    data.minOf { it.y },
-                    data.maxOf { it.y }
+                    bankingUiState.graphData.dataPoints.minOf { it.y },
+                    bankingUiState.graphData.dataPoints.maxOf { it.y }
                 ),
-                data = data
+                data = bankingUiState.graphData.dataPoints.map { PointF(it.x, it.y) }
             )
             LazyColumn(
                 Modifier.fillMaxWidth(),
@@ -57,8 +50,8 @@ fun BankingScreen(transactions: List<Transaction>) {
             ) {
                 var currentDate: String? = null
 
-                items(transactions) { transaction: Transaction ->
-                    val transactionDate = transaction.time.toDisplayableDate()
+                items(bankingUiState.listItems) { transaction: TransactionUiState ->
+                    val transactionDate = transaction.time
                     if (transactionDate != currentDate) {
                         currentDate = transactionDate
                         Text(transactionDate)
@@ -66,7 +59,7 @@ fun BankingScreen(transactions: List<Transaction>) {
                     RegularListItem(
                         startTitle = transaction.name,
                         startSubtitle = transaction.description,
-                        endTitle = transaction.amount.toDisplayableAmount()
+                        endTitle = transaction.amount
                     )
                 }
             }
@@ -78,13 +71,20 @@ fun BankingScreen(transactions: List<Transaction>) {
 @Composable
 private fun BankingScreenPreview() {
     BankingScreen(
-        transactions = listOf(
-            Transaction(
-                1L,
-                Amount("EUR", 10.00),
-                "name",
-                "description",
-                Calendar.getInstance().time
+        bankingUiState = BankingUiState(
+            GraphDataUiState(
+                Pair("Oct 31, 2021", "Nov 7, 2021"),
+                Pair("0,00", "10,00"),
+                listOf(DataPointUiState(0f, 0f), DataPointUiState(1f, 1f))
+            ),
+            listOf(
+                TransactionUiState(
+                    1L,
+                    "€ 10,00",
+                    "name",
+                    "description",
+                    "Nov 7, 2021"
+                )
             )
         )
     )
