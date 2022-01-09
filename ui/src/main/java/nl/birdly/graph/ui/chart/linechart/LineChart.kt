@@ -1,7 +1,6 @@
 package nl.birdly.graph.ui.chart.linechart
 
 import android.graphics.PointF
-import android.util.Log
 import android.util.Range
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.Orientation
@@ -17,19 +16,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LineChart(
-    modifier: Modifier,
     initialXRange: Range<Float>,
     yRange: Range<Float>,
     data: List<PointF>,
+    modifier: Modifier = Modifier,
     colors: LineChartColors = LineChartDefaults.colors(),
     sizes: LineChartSizes = LineChartDefaults.sizes(),
 ) {
     val lineColor = colors.lineColor().value
     val dotColor = colors.dotColor().value
+    val graphColor = colors.graphColor().value
     val backgroundColor = colors.backgroundColor().value
 
     val lineThickness = sizes.lineThickness().value
@@ -74,11 +76,36 @@ fun LineChart(
 
             drawRect(backgroundColor, size = size)
             drawLine(xRange, yRange, data, lineColor, lineThickness)
+            drawGraph(xRange, yRange, data, graphColor)
+
             data.forEach { point ->
                 drawOval(xRange, yRange, point, dotColor, dotSize)
             }
         }
     }
+}
+
+private fun DrawScope.drawGraph(
+    xRange: Range<Float>,
+    yRange: Range<Float>,
+    data: List<PointF>,
+    graphColor: Color
+) {
+    drawPath(
+        Path().apply {
+            moveTo(0f, 1f * size.height)
+            data.forEach {
+                lineTo(
+                    it.x.toRelativePosition(xRange) * size.width,
+                    (1f - it.y.toRelativePosition(yRange)) * size.height
+                )
+            }
+            lineTo(1f * size.width, 1f * size.height)
+            lineTo(0f, 1f * size.height)
+            close()
+        },
+        graphColor
+    )
 }
 
 private fun Range<Float>.diff() = upper - lower
@@ -139,4 +166,16 @@ fun DrawScope.drawLine(
     }
 }
 
-
+@Preview
+@Composable
+private fun LineChartPreview() {
+    LineChart(
+        Range(0f, 1f),
+        Range(0f, 1f),
+        listOf(
+            PointF(0f, 0f),
+            PointF(0.5f, 1f),
+            PointF(1f, 0.5f),
+        )
+    )
+}

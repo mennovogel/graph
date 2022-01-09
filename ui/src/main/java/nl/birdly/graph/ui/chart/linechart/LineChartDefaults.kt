@@ -20,6 +20,9 @@ interface LineChartColors {
     fun dotColor(): State<Color>
 
     @Composable
+    fun graphColor(): State<Color>
+
+    @Composable
     fun backgroundColor(): State<Color>
 }
 
@@ -36,12 +39,14 @@ object LineChartDefaults {
 
     @Composable
     fun colors(
-        lineColor: Color = MaterialTheme.colors.secondary,
-        dotColor: Color = MaterialTheme.colors.secondaryVariant,
+        lineColor: Color = MaterialTheme.colors.primary,
+        dotColor: Color = MaterialTheme.colors.secondary,
+        graphColor: Color = MaterialTheme.colors.primaryVariant,
         backgroundColor: Color = MaterialTheme.colors.background,
     ): LineChartColors = DefaultLineChartColors(
         lineColor,
         dotColor,
+        graphColor,
         backgroundColor
     )
 
@@ -59,6 +64,7 @@ object LineChartDefaults {
 private class DefaultLineChartColors(
     private val lineColor: Color,
     private val dotColor: Color,
+    private val graphColor: Color,
     private val backgroundColor: Color,
 ) : LineChartColors {
 
@@ -70,6 +76,11 @@ private class DefaultLineChartColors(
     @Composable
     override fun dotColor(): State<Color> {
         return rememberUpdatedState(newValue = dotColor)
+    }
+
+    @Composable
+    override fun graphColor(): State<Color> {
+        return rememberUpdatedState(newValue = graphColor)
     }
 
     @Composable

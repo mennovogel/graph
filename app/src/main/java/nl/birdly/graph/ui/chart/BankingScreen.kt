@@ -31,9 +31,6 @@ fun BankingScreen(bankingUiState: BankingUiState) {
 
         Column {
             LineChart(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
                 initialXRange = Range.create(
                     bankingUiState.graphData.dataPoints.minOf { it.x },
                     bankingUiState.graphData.dataPoints.maxOf { it.x }
@@ -42,7 +39,10 @@ fun BankingScreen(bankingUiState: BankingUiState) {
                     bankingUiState.graphData.dataPoints.minOf { it.y },
                     bankingUiState.graphData.dataPoints.maxOf { it.y }
                 ),
-                data = bankingUiState.graphData.dataPoints.map { PointF(it.x, it.y) }
+                data = bankingUiState.graphData.dataPoints.map { PointF(it.x, it.y) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
             )
             LazyColumn(
                 Modifier.fillMaxWidth(),
